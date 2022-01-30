@@ -3,10 +3,9 @@
         <form @submit.prevent="salvar(), listar()">
             <label>LEILÃO</label>
             <div class="select">
-                <select v-model="lance.leilao">
-                    <option>Selecione o leilão</option>
-                    <!-- ESTÁ PASSANDO A STRING AO INVÉS DO ID -->
-                    <option v-for="leilao in leiloes" :key="leilao.id">{{leilao.item}}</option>
+                <select v-model="lance.leilao.id">
+                    <option selected="selected">Selecione o leilão</option>
+                    <option v-for="leilao in leiloes" :key="leilao.id" :value="leilao.id">{{leilao.item}}</option>
                 </select>
             </div>
             <label>VALOR</label>
@@ -16,11 +15,11 @@
                 placeholder="Digite o valor"
                 v-model="lance.valor">
             <label>PARCIPANTE</label>
+
             <div class="select">
-                <select v-model="lance.participante">
-                    <option>Selecione o participante</option>
-                    <!-- ESTÁ PASSANDO A STRING AO INVÉS DO ID -->
-                    <option v-for="participante in participantes" :key="participante.id">{{participante.nome}}</option>
+                <select v-model="lance.participante.id">
+                    <option selected="selected">Selecione o participante</option>
+                    <option v-for="participante in participantes" :key="participante.id" :value="participante.id">{{participante.nome}}</option>
                 </select>
             </div>
 
@@ -42,7 +41,7 @@
 
             <tbody>
                 <tr v-for="lance of lances" :key="lance.id">
-                    <td>{{ lance.participante }}</td>
+                    <td>{{ lance.participante.nome }}</td>
                     <td>{{ lance.valor }}</td>
                     <td>
                         <button @click="editar(lance), this.listar()" class="button is-success"><i class="material-icons">Editar </i></button>
@@ -66,8 +65,14 @@ export default {
             lance:{
                 id: '',
                 valor: '',
-                participante: '',
-                leilao: ''
+                participante: {
+                    id: '',
+                    nome: ''
+                },
+                leilao: {
+                    id: '',
+                    item: ''
+                }
             },
             lances:[],
             participantes:[],
@@ -94,7 +99,6 @@ export default {
                 Lance.editar(this.lance);
                 alert('Editado com sucesso!');
                 this.lance = {};
-                this.lance.id();
             }
         },
         remover(lance){

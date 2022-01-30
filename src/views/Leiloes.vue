@@ -19,7 +19,7 @@
                     <option>ABERTO</option>
                     <option>FINALIZADO</option>
                     <option>EXPIRADO</option>
-                    <option>INATIVO</option>
+                    <option selected="selected !important">INATIVO</option>
                 </select>
             </div>
           <br>
@@ -46,8 +46,9 @@
                     <td>{{ leilao.lanceMinimo }}</td>
                     <td>{{ leilao.situacao }}</td>
                     <td>
-                    <button @click="editar(leilao), this.listar()" class="button is-success"><i class="material-icons">Editar </i></button>
-                    <button @click="remover(leilao), this.listar()" class="button is-danger"><i class="material-icons">Excluir </i></button>
+                        <button @click="darLance(leilao)" class="button is-link"><i class="material-icons">Dar Lance</i></button>
+                        <button @click="editar(leilao), this.listar()" class="button is-success"><i class="material-icons">Editar</i></button>
+                        <button @click="remover(leilao), this.listar()" class="button is-danger"><i class="material-icons">Excluir</i></button>
                     </td>
                 </tr>
             </tbody>
@@ -107,5 +108,8 @@ export default {
 </script>
 
 <style>
-
+.button{
+    margin-left: 5px;
+    margin-right: 5px;
+}
 </style>
