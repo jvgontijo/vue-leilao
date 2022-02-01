@@ -26,8 +26,13 @@ const routes = [
     name: 'leiloes',
     component: Leiloes
   },
+  // {
+  //   path: '/lances',
+  //   name: 'lances',
+  //   component: Lances
+  // },
   {
-    path: '/lances',
+    path: '/lances/:id',
     name: 'lances',
     component: Lances
   },

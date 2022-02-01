@@ -3,7 +3,6 @@
     <router-link to="/home">Home</router-link> |
     <router-link to="/participantes">Participantes</router-link> |
     <router-link to="/leiloes">Leilões</router-link> |
-    <router-link to="/lances">Lances</router-link> |
     <router-link to="/about">About</router-link>
     <router-view/>
   </div>

@@ -3,30 +3,35 @@
         <form @submit.prevent="salvar(), listar()">
             <label>NOME</label>
             <input 
+                required
                 type="text" 
                 class="input"
                 placeholder="Digite o nome"
                 v-model="participante.nome">
             <label>CPF</label>
             <input 
+                required
                 type="text" 
                 class="input"
                 placeholder="xxx.xxx.xxx-xx"
                 v-model="participante.cpf">
             <label>EMAIL</label>
             <input 
+                required
                 type="email"
                 class="input"
                 placeholder="Digite o email"
                 v-model="participante.email">
             <label>TELEFONE</label>
             <input 
+                required
                 type="text" 
                 class="input"
                 placeholder="Digite o telefone"
                 v-model="participante.telefone">
             <label>DATA NASCIMENTO</label>
             <input 
+                required
                 type="date"
                 v-model="participante.dataNascimento">
             

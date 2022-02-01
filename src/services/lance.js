@@ -1,8 +1,8 @@
 import { http } from "./config"
 
 export default {
-    listar:()=>{
-        return http.get('lances')
+    listar:(id)=>{
+        return http.get('lances/' + id)
     },
 
     salvar:(lance) =>{

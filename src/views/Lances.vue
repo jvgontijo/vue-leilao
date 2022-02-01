@@ -1,13 +1,9 @@
 <template>
     <div class="container">
-        <form @submit.prevent="salvar(), listar()">
-            <label>LEILÃO</label>
-            <div class="select">
-                <select v-model="lance.leilao.id">
-                    <option selected="selected">Selecione o leilão</option>
-                    <option v-for="leilao in leiloes" :key="leilao.id" :value="leilao.id">{{leilao.item}}</option>
-                </select>
-            </div>
+        <form @submit.prevent="salvar(), listar(this.idLeilao)">
+            <label>LEILÃO </label>
+            <label v-if="idLeilao != null">{{this.lance.leilao.id}}</label>  
+            <br>
             <label>VALOR</label>
             <input 
                 type="text"
@@ -23,11 +19,9 @@
                 </select>
             </div>
 
-            <button 
-                style="margin-top: 10px" 
-                class="button is-primary">
+            <button style="margin-top: 10px" class="button is-primary">
                     Salvar  
-                    <i class="material-icons left"></i>
+                <i class="material-icons left"></i>
             </button>
         </form>
 
@@ -56,7 +50,6 @@
 
 <script>
 import Lance from '@/services/lance'
-import Leilao from '@/services/leilao'
 import Participante from '@/services/participante'
 
 export default {
@@ -70,25 +63,26 @@ export default {
                     nome: ''
                 },
                 leilao: {
-                    id: '',
+                    id: this.$route.params.id,
                     item: ''
                 }
             },
+            //this.$route.params.id
+            idLeilao: this.$route.params.id,
             lances:[],
             participantes:[],
             leiloes: []
         }
     },
     mounted(){
-        this.listar();
+        this.listar(this.idLeilao);
         this.preencheSelectParticipante();
-        this.preencheSelectLeilao();
     },
     methods:{
-        listar(){
-            Lance.listar().then(res => {
+        listar(idLeilao){
+            Lance.listar(idLeilao).then(res => {
                 this.lances = res.data;
-            })
+            });
         },
         salvar(){
             if(!this.lance.id){
@@ -112,11 +106,6 @@ export default {
         preencheSelectParticipante(){
             Participante.listar().then(res => {
                 this.participantes = res.data;
-            })
-        },
-        preencheSelectLeilao(){
-            Leilao.listar().then(res => {
-                this.leiloes = res.data;
             })
         }
     }

@@ -2,12 +2,14 @@
     <div class="container">
 
         <form @submit.prevent="salvar(), listar()">
+          
           <label>ITEM</label>
-          <input class="input" type="text" placeholder="Digite o nome do item" required v-model="leilao.item" >
+          <input v-validate="'required'" id="fieldItem" name="fieldItem" class="input" type="text" placeholder="Digite o nome do item" required v-model="leilao.item" >
+          <span v-show="errors.has('fieldItem')">ERRO</span>
           <label>DATA ABERTURA</label>
-          <input class="input" type="date" required v-model="leilao.dataAbertura" >
+          <input v-validate="'before:beforeTarget'" name="before_field" class="input" type="date" required v-model="leilao.dataAbertura" >
           <label>DATA ENCERRAMENTO</label>
-          <input class="input" type="date" required v-model="leilao.dataFechamento" >
+          <input name="before_field_target" ref="beforeTarget" class="input" type="date" required v-model="leilao.dataFechamento" >
           
           <label>LANCE MINIMO</label>
           <input class="input" type="text" placeholder="Valor minimo dos lances" required v-model="leilao.lanceMinimo">
@@ -16,10 +18,7 @@
           <br>
           <div class="select">
                 <select v-model="leilao.situacao">
-                    <option>ABERTO</option>
-                    <option>FINALIZADO</option>
-                    <option>EXPIRADO</option>
-                    <option selected="selected !important">INATIVO</option>
+                    <option v-for="situacao in situacoes" v-bind:key="situacao">{{situacao}}</option>
                 </select>
             </div>
           <br>
@@ -46,7 +45,12 @@
                     <td>{{ leilao.lanceMinimo }}</td>
                     <td>{{ leilao.situacao }}</td>
                     <td>
-                        <button @click="darLance(leilao)" class="button is-link"><i class="material-icons">Dar Lance</i></button>
+                        <router-link
+                            class="mr-3"
+                            :to="{ name: 'lances', params: { id: leilao.id } }"
+                            >
+                            <button class="button is-link">Dar Lances</button>
+                            </router-link>
                         <button @click="editar(leilao), this.listar()" class="button is-success"><i class="material-icons">Editar</i></button>
                         <button @click="remover(leilao), this.listar()" class="button is-danger"><i class="material-icons">Excluir</i></button>
                     </td>
@@ -69,9 +73,10 @@ export default {
                 lanceMinimo: '',
                 lanceMaximo: '',
                 dataFechamento: '',
-                situacao: ''
+                situacao: '',
             },
-            leiloes:[]
+            leiloes:[],
+            situacoes: ['INATIVO', 'EXPIRADO', 'ABERTO', 'FECHADO']
         }
     },
     mounted(){
@@ -102,7 +107,27 @@ export default {
             Leilao.remover(leilao);
             alert('Removido com sucesso');
             this.listar();
+        },
+        validaData(){
+
         }
+        // function compararDataInicioLeilao(data){
+            //var data = new Date();
+            //var dia = String(data.getDate()).padStart(2, '0');
+            //var mes = String(data.getMonth() + 1).padStart(2, '0');
+            //var ano = data.getFullYear();
+            //dataAtual = ano + '-' + mes + '-' + dia;
+            //if(data.value<dataAtual){
+            // 		alert("A data que vc inseriu e antiga, atualize");
+            //}
+        // }
+
+        // function compararDataFimLeilao(dataInicio,dataFechamento){
+            // 	if(dataInicio.value>dataFechamento.value){
+            // 	console.log(dataInicio,dataFechamento);
+            // 		alert("A data que vc inseriu antecede a data de incio, por favor Corrija!");
+        // 	}
+        // }
     }
 }
 </script>
