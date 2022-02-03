@@ -5,6 +5,10 @@ export default {
         return http.get('leiloes')
     },
 
+    listarPorStatus:(status)=>{
+        return http.get('leiloes/'+ status)
+    },
+
     salvar:(leilao) =>{
         return http.post('leilao', leilao);
     },

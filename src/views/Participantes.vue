@@ -33,6 +33,7 @@
             <input 
                 required
                 type="date"
+                class="input"
                 v-model="participante.dataNascimento">
             
             <button 
@@ -41,6 +42,7 @@
                     Salvar  
                     <i class="material-icons left"></i>
             </button>
+            <button @click="limpar()" style="margin-top: 10px" class="button is-danger"><i class="material-icons">Cancelar</i></button>
         </form>
 
         <table class="table">
@@ -62,8 +64,8 @@
                     <td>{{ participante.telefone }}</td>
                     <td>{{ participante.dataNascimento }}</td>
                     <td>
-                        <button @click="editar(participante), this.listar()" class="button is-success"><i class="material-icons">Editar </i></button>
-                        <button @click="remover(participante), this.listar()" class="button is-danger"><i class="material-icons">Excluir </i></button>
+                        <button @click="editar(participante), listar()" class="button is-success"><i class="material-icons">Editar </i></button>
+                        <button @click="remover(participante), listar()" class="button is-danger"><i class="material-icons">Excluir </i></button>
                     </td>
                 </tr>
             </tbody>
@@ -93,6 +95,9 @@ export default {
         this.listar();
     },
     methods:{
+        limpar(){
+            this.participante = {};
+        },
         listar(){
             Participante.listar().then(res => {
                 this.participantes = res.data;

@@ -5,8 +5,12 @@ export default {
         return http.get('lances/' + id)
     },
 
-    salvar:(lance) =>{
-        return http.post('lance', lance);
+    salvar:async (lance) =>{
+        try {
+            return http.post('lance', lance);
+        } catch (e) {
+            this.errors.push(e);
+        }
     },
 
     editar:(lance) => {

@@ -1,12 +1,14 @@
 <template>
     <div class="container">
-        <form @submit.prevent="salvar(), listar(this.idLeilao)">
+        <form @submit.prevent="salvar(), listar(idLeilao)">
             <label>LEILÃO </label>
-            <label v-if="idLeilao != null">{{this.lance.leilao.id}}</label>  
+            <label v-if="idLeilao != null">{{this.idLeilao}}</label> 
+            <label>LANCE MINIMO </label>
+            <label v-if="lanceMinimoParam != null">{{this.lanceMinimoParam}}</label>   
             <br>
             <label>VALOR</label>
             <input 
-                type="text"
+                type="number"
                 class="input"
                 placeholder="Digite o valor"
                 v-model="lance.valor">
@@ -14,7 +16,6 @@
 
             <div class="select">
                 <select v-model="lance.participante.id">
-                    <option selected="selected">Selecione o participante</option>
                     <option v-for="participante in participantes" :key="participante.id" :value="participante.id">{{participante.nome}}</option>
                 </select>
             </div>
@@ -38,8 +39,8 @@
                     <td>{{ lance.participante.nome }}</td>
                     <td>{{ lance.valor }}</td>
                     <td>
-                        <button @click="editar(lance), this.listar()" class="button is-success"><i class="material-icons">Editar </i></button>
-                        <button @click="remover(lance), this.listar()" class="button is-danger"><i class="material-icons">Excluir </i></button>
+                        <button @click="editar(lance), listar(idLeilao)" class="button is-success"><i class="material-icons">Editar </i></button>
+                        <button @click="remover(lance), listar(idLeilao)" class="button is-danger"><i class="material-icons">Excluir </i></button>
                     </td>
                 </tr>
             </tbody>
@@ -64,14 +65,17 @@ export default {
                 },
                 leilao: {
                     id: this.$route.params.id,
-                    item: ''
+                    item: '',
+                    lanceMinimo: this.$route.params.lanceMinimo
                 }
             },
             //this.$route.params.id
+            lanceMinimoParam: this.$route.params.lanceMinimo,
             idLeilao: this.$route.params.id,
             lances:[],
             participantes:[],
-            leiloes: []
+            leiloes: [],
+            httpErrors: [this.errors]
         }
     },
     mounted(){
@@ -87,18 +91,24 @@ export default {
         salvar(){
             if(!this.lance.id){
                 Lance.salvar(this.lance);
-                alert('Lance salvo com sucesso!');
-                this.lance = {};
+                if(this.httpErrors.length){
+                    console.log(this.httpErrors);
+                    alert('ERRO');
+                } else {
+                    alert('Lance salvo com sucesso!');
+                }
+                this.lance.valor = '';
             } else {
                 Lance.editar(this.lance);
                 alert('Editado com sucesso!');
-                this.lance = {};
+                this.lance.valor = '';
             }
+            this.errors = {};
+            this.httpErrors = {};
         },
         remover(lance){
             Lance.remover(lance);
             alert('Removido com sucesso!');
-            this.listar();
         },
         editar(lance){
             this.lance = lance;
